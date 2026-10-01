@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<title>Services — Unity Property Management</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="./image-slot.js"></script>
+<style>
+body{margin:0;background:#FBFAF7;color:#0A0A0A;font-family:"Manrope",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#2E3A32;text-decoration:none}a:hover{color:#0A0A0A}
+button{font-family:inherit}
+input,select,textarea{font-family:inherit}
+::selection{background:#2E3A32;color:#FFFFFF}
+</style>
+</helmet>
+
+<div style="min-height:100vh;display:flex;flex-direction:column">
+
+<div style="background:#2E3A32;color:#E7EBE3;font-size:12px;letter-spacing:.04em">
+  <div style="max-width:1240px;margin:0 auto;padding:9px clamp(20px,4vw,48px);display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between;align-items:center">
+    <span style="text-transform:uppercase;letter-spacing:.18em;font-size:11px">A UNITY Company · Serving all of San Diego County</span>
+    <div style="display:flex;gap:20px;flex-wrap:wrap">
+      <a href="tel:8583378615" style="color:#E7EBE3">858-337-8615</a>
+      <a href="mailto:KKestatemanagement@gmail.com" style="color:#E7EBE3">KKestatemanagement@gmail.com</a>
+    </div>
+  </div>
+</div>
+
+<header style="position:sticky;top:0;z-index:20;background:rgba(251,250,247,.92);backdrop-filter:blur(10px);border-bottom:1px solid rgba(10,23,38,.08)">
+  <div style="max-width:1240px;margin:0 auto;padding:24px clamp(20px,4vw,48px);display:flex;flex-wrap:wrap;gap:16px 32px;align-items:center;justify-content:space-between">
+    <button onClick="{{ goHome }}" style="background:none;border:0;padding:0;cursor:pointer;display:flex;align-items:center;gap:14px;color:#0A0A0A;text-align:left">
+      <span style="font-family:'Roboto',sans-serif;font-weight:400;font-size:17px;letter-spacing:.42em">UNITY</span>
+      <span style="width:1px;height:26px;background:rgba(10,23,38,.25)"></span>
+      <span style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;line-height:1.35;color:#3A4756">Property<br>Management</span>
+    </button>
+    <sc-if value="{{ isMobile }}" hint-placeholder-val="{{ false }}">
+      <button onClick="{{ toggleMenu }}" aria-label="{{ menuLabel }}" aria-expanded="{{ menuOpen }}" style="position:relative;z-index:40;width:44px;height:44px;margin-right:-10px;background:none;border:0;padding:0;cursor:pointer">
+        <span style="position:absolute;left:10px;width:24px;height:1px;background:#0A0A0A;top:{{ barTop }};transform:{{ barTopT }};transition:transform .45s cubic-bezier(.7,0,.2,1),top .45s cubic-bezier(.7,0,.2,1)"></span>
+        <span style="position:absolute;left:10px;width:24px;height:1px;background:#0A0A0A;top:{{ barBot }};transform:{{ barBotT }};transition:transform .45s cubic-bezier(.7,0,.2,1),top .45s cubic-bezier(.7,0,.2,1)"></span>
+      </button>
+    </sc-if>
+    <sc-if value="{{ isDesktop }}" hint-placeholder-val="{{ true }}">
+    <nav style="display:flex;flex-wrap:wrap;align-items:center;gap:4px 26px">
+      <sc-for list="{{ nav }}" as="item" hint-placeholder-count="5">
+        <button onClick="{{ item.onClick }}" style="background:none;border:0;border-bottom:1px solid {{ item.line }};padding:6px 0;cursor:pointer;font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:500;color:{{ item.color }}" style-hover="color:#5B6878">{{ item.label }}</button>
+      </sc-for>
+      <button onClick="{{ goContact }}" style="background:#2E3A32;color:#FFFFFF;border:1px solid #2E3A32;border-radius:0;padding:10px 18px;font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;cursor:pointer" style-hover="background:#0A0A0A;color:#FFFFFF">Get a proposal</button>
+    </nav>
+    </sc-if>
+  </div>
+</header>
+<sc-if value="{{ isMobile }}" hint-placeholder-val="{{ false }}">
+  <div aria-hidden="{{ menuHidden }}" style="position:fixed;inset:0;z-index:19;background:#F4F0EA;display:flex;flex-direction:column;padding:clamp(96px,16vh,120px) 28px 32px;overflow-y:auto;overscroll-behavior:contain;opacity:{{ menuOpacity }};visibility:{{ menuVis }};transition:opacity .5s cubic-bezier(.2,.7,.2,1),visibility .5s">
+    <nav style="display:flex;flex-direction:column;gap:2px;border-top:1px solid rgba(10,23,38,.14)">
+      <sc-for list="{{ mobileNav }}" as="m" hint-placeholder-count="6">
+        <button onClick="{{ m.onClick }}" style="display:flex;justify-content:space-between;align-items:baseline;width:100%;background:none;border:0;border-bottom:1px solid rgba(10,23,38,.14);padding:clamp(12px,2.4vh,20px) 0;cursor:pointer;text-align:left;color:#0A0A0A;opacity:{{ m.op }};transform:{{ m.tf }};transition:opacity .6s cubic-bezier(.2,.7,.2,1) {{ m.delay }},transform .6s cubic-bezier(.2,.7,.2,1) {{ m.delay }}">
+          <span style="font-family:'Roboto',sans-serif;font-weight:300;font-size:clamp(24px,7vw,30px);letter-spacing:-.01em">{{ m.label }}</span>
+          <span style="width:24px;height:1px;background:{{ m.line }}"></span>
+        </button>
+      </sc-for>
+    </nav>
+    <div style="margin-top:auto;padding-top:28px;display:grid;gap:18px;opacity:{{ footOp }};transform:{{ footTf }};transition:opacity .6s cubic-bezier(.2,.7,.2,1) .42s,transform .6s cubic-bezier(.2,.7,.2,1) .42s">
+      <button onClick="{{ mGoContact }}" style="background:#2E3A32;color:#FFFFFF;border:0;border-radius:0;padding:16px 24px;font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;cursor:pointer">Get a proposal</button>
+      <div style="display:flex;justify-content:space-between;gap:16px;font-size:13px;color:#3A4756"><a href="tel:8583378615" style="color:#3A4756">858-337-8615</a><span>San Diego County</span></div>
+    </div>
+  </div>
+</sc-if>
+
+<main style="flex:1">
+
+<sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+  <div style="background:#F4F0EA"><section data-screen-label="Home" style="max-width:1240px;margin:0 auto;padding:clamp(48px,7vw,104px) clamp(20px,4vw,48px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:clamp(40px,6vw,96px);align-items:start">
+    <div style="display:grid;gap:26px;align-content:start;max-width:460px;padding-top:clamp(0px,4vw,56px)">
+      <span style="width:48px;height:1px;background:#A8864F"></span>
+      <div style="font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:#5B6878;font-weight:500">Residential property management · San Diego County</div>
+      <h1 style="font-family:'Roboto',sans-serif;font-weight:300;font-size:clamp(34px,3.8vw,52px);line-height:1.12;letter-spacing:-.01em;margin:0;text-wrap:balance">Coastal living.<br>Effortless ownership.</h1>
+      <p style="font-size:16px;line-height:1.7;color:#3A4756;margin:0;text-wrap:pretty">Unity manages leasing, rent, maintenance and compliance for owners from La Jolla to the South Bay — so your property performs and you stay hands-off.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:20px 36px;align-items:center;padding-top:8px">
+        <button onClick="{{ goContact }}" style="background:#2E3A32;color:#FFFFFF;border:1px solid #2E3A32;border-radius:0;padding:13px 26px;font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;cursor:pointer" style-hover="background:#0A0A0A;color:#FFFFFF">Get a proposal</button>
+        <button onClick="{{ goServices }}" style="background:none;border:0;padding:0;color:#0A0A0A;font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:14px" style-hover="color:#5B6878">Our services <span style="font-size:18px;letter-spacing:0">⟶</span></button>
+      </div>
+    </div>
+    <div style="position:relative;padding:28px 0 0 28px;isolation:isolate">
+      <div style="position:absolute;top:0;left:0;width:62%;height:62%;border:1px solid rgba(10,23,38,.3);z-index:-1"></div>
+      <div style="position:relative;width:100%;aspect-ratio:5/4;background:#E6E0D7"><image-slot id="home-hero-2" shape="rect" src="assets/hero-interior.png" placeholder="Interior with a San Diego view"></image-slot></div>
+    </div>
+  </section></div>
+
+  <section style="background:#FFFFFF;border-bottom:1px solid rgba(10,23,38,.1)">
+    <div style="max-width:1240px;margin:0 auto;padding:0 clamp(20px,4vw,48px);display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))">
+      <sc-for list="{{ proof }}" as="p" hint-placeholder-count="4">
+        <div style="padding:32px 24px 32px 0;display:grid;grid-template-columns:auto 1fr;gap:6px 18px;align-items:start">
+          <div aria-hidden="true" style="width:28px;height:28px;grid-row:span 2;margin-top:2px;background:center/contain no-repeat;background-image:{{ p.iconBg }}"></div>
+          <span style="font-family:'Roboto',sans-serif;font-weight:300;font-size:20px;line-height:1.2">{{ p.big }}</span>
+          <span style="font-size:14px;color:#5B6878;line-height:1.45">{{ p.small }}</span>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <section style="background:#2E3A32;color:#FFFFFF"><div style="max-width:1240px;margin:0 auto;padding:clamp(88px,11vw,152px) clamp(20px,4vw,48px)">
+    <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:24px;margin-bottom:56px">
+      <h2 style="font-family:'Roboto',sans-serif;font-weight:300;font-size:clamp(26px,2.8vw,36px);line-height:1;letter-spacing:-.01em;margin:0;max-width:720px;text-wrap:balance;color:#FFFFFF">Full-service management, one accountable team.</h2>
+      <button onClick="{{ goServices }}" style="background:none;border:0;padding:0;color:#FFFFFF;font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;cursor:pointer" style-hover="color:#C9A96A">All services ⟶</button>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));border-top:1px solid rgba(255,255,255,.18)">
+      <sc-for list="{{ services }}" as="s" hint-placeholder-count="6">
+        <div style="padding:32px 32px 40px 0;border-bottom:1px solid rgba(255,255,255,.18);display:grid;gap:14px;align-content:start">
+          <div aria-hidden="true" style="width:30px;height:30px;background:center/contain no-repeat;background-image:{{ s.iconBg }}"></div>
+          <h3 style="font-family:'Roboto',sans-serif;font-weight:300;font-size:21px;line-height:1.25;margin:0;color:#FFFFFF">{{ s.title }}</h3>
+          <p style="margin:0;font-size:16px;line-height:1.6;color:#D3D9CF;text-wrap:pretty">{{ s.blurb }}</p>
+        </div>
+      </sc-for>
+    </div>
+  </div></section>
+
+  <section style="position:relative;width:100%;aspect-ratio:21/8;min-height:360px;max-height:640px;background:#1A1A1A;overflow:hidden">
+    <div style="position:absolute;inset:0"><image-slot id="home-band" shape="rect" src="assets/photo-backyard.png" placeholder="Backyard at dusk"></image-slot></div>
+    <div style="position:absolute;inset:0;background:rgba(10,10,10,.55);pointer-events:none"></div>
+    <figure style="position:absolute;inset:0;margin:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;padding:40px clamp(20px,6vw,96px);text-align:center;color:#FFFFFF;pointer-events:none">
+      <span style="width:48px;height:1px;background:#C9A96A"></span>
+      <blockquote style="margin:0;max-width:820px;font-family:'Roboto',sans-serif;font-weight:300;font-size:clamp(22px,2.6vw,34px);line-height:1.35;letter-spacing:-.005em;text-wrap:balance">“Treat every property like it's our own, and every owner like a long-term partner.”</blockquote>
+      <figcaption style="font-size:11px;letter-spacing:.26em;text-transform:uppercase;font-weight:500;color:#E8E2D8">Kevin Kang, Founder</figcaption>
+    </figure>
+  </section>
+  <section style="background:#F2EEE8">
+    <div style="max-width:1240px;margin:0 auto;padding:clamp(72px,9vw,120px) clamp(20px,4vw,48px)">
+      <div style="font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:#5B6878;font-weight:500;margin-bottom:18px">Getting started</div>
+      <h2 style="font-family:'Roboto',sans-serif;font-weight:300;font-size:clamp(26px,2.8vw,36px);line-height:1;letter-spacing:-.01em;margin:0 0 56px;max-width:720px">From first call to first rent check.</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:32px">
+        <sc-for list="{{ steps }}" as="st" hint-placeholder-count="4">
+          <div style="display:grid;gap:14px;align-content:start;padding-top:22px;border-top:1px solid #A8864F">
+            <span style="font-family:'Roboto',sans-serif;font-weight:300;font-size:28px;line-height:1;color:#0A0A0A">{{ st.num }}</span>
+            <h3 style="margin:0;font-size:19px;font-weight:600">{{ st.title }}</h3>
+            <p style="margin:0;font-size:15px;line-height:1.6;color:#3A4756">{{ st.text }}</p>
+          </div>
+        </sc-for>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;align-items:center;gap:16px 28px;margin-top:56px;padding-top:32px;border-top:1px solid rgba(10,23,38,.14)">
+        <button onClick="{{ goContact }}" style="background:#2E3A32;color:#FFFFFF;border:1px solid #2E3A32;border-radius:0;padding:14px 28px;font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;cursor:pointer" style-hover="background:#0A0A0A;border-color:#0A0A0A">Schedule a free consultation</button>
+        <a href="tel:8583378615" style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;color:#0A0A0A">Or call 858-337-8615</a>
+      </div>
+    </div>
+  </section>
+
+  <section style="max-width:1240px;margin:0 auto;padding:clamp(88px,11vw,152px) clamp(20px,4vw,48px)">
+    <div style="font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:#5B6878;font-weight:500;margin-bottom:24px">Where we manage</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,170px),1fr));gap:40px 32px;margin:0 0 48px">
+      <sc-for list="{{ regions }}" as="rg" hint-placeholder-count="6">
+        <div style="display:grid;gap:14px;align-content:start;padding-top:18px;border-top:1px solid rgba(10,23,38,.3)">
+          <span style="font-family:'Roboto',sans-serif;font-weight:400;font-size:17px">{{ rg.name }}</span>
+          <ul style="list-style:none;margin:0;padding:0;display:grid;gap:7px">
+            <sc-for list="{{ rg.areas }}" as="ar" hint-placeholder-count="6"><li style="font-size:14px;color:#3A4756">{{ ar }}</li></sc-for>
+          </ul>
+        </div>
+      </sc-for>
+    </div>
+    <button onClick="{{ goAreas }}" style="background:none;border:0;padding:0;color:#0A0A0A;font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;cursor:pointer" style-hover="color:#0A0A0A">Explore areas we serve ⟶</button>
+  </section>
+
+  <section style="background:#F2EEE8;color:#0A0A0A">
+    <div style="max-width:1240px;margin:0 auto;padding:clamp(72px,9vw,120px) clamp(20px,4vw,48px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:clamp(40px,6vw,88px);align-items:center">
+      <div style="aspect-ratio:4/5;max-width:460px;width:100%;border-radius:0;overflow:hidden;background:#E6E0D7">
+        <img src="assets/kevin-kang-coastal.png" alt="Kevin Kang, founder of Unity Property Management" style="width:100%;height:100%;object-fit:cover;display:block">
+      </div>
+      <div>
+        <div style="font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:#5B6878;font-weight:500;margin-bottom:22px">Leadership</div>
+        <h2 style="font-family:'Roboto',sans-serif;font-weight:300;font-size:clamp(26px,2.8vw,36px);line-height:1.15;margin:0 0 26px;text-wrap:balance">Led by an investor's agent, built for owners.</h2>
+        <p style="font-size:16px;line-height:1.75;color:#3A4756;margin:0 0 20px;max-width:560px">Unity was founded by Kevin Kang, a licensed California real estate agent studying Finance &amp; Real Estate at San Diego State. Kevin oversees 90+ rental units across the county and brings an investor's eye to every property — cash flow, condition, and long-term value.</p>
+        <p style="font-size:16px;line-height:1.75;color:#3A4756;margin:0 0 36px;max-width:560px">That means you get both day-to-day management and sharp advice when it's time to buy, sell, or renovate.</p>
+        <button onClick="{{ goAbout }}" style="background:transparent;color:#0A0A0A;border:1px solid #0A0A0A;border-radius:0;padding:13px 26px;font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;cursor:pointer" style-hover="background:#0A0A0A;color:#FFFFFF">About Unity</button>
+      </div>
+    </div>
+  </section>
+
+  <section style="max-width:1240px;margin:0 auto;padding:clamp(88px,11vw,152px) clamp(20px,4vw,48px)">
+    <div style="display:flex;flex-wrap:wrap;gap:12px 20px;align-items:baseline;margin-bottom:48px">
+      <h2 style="font-family:'Roboto',sans-serif;font-weight:300;font-size:clamp(26px,2.8vw,36px);line-height:1.15;margin:0">What owners say.</h2>
+      <sc-if value="{{ showSample }}" hint-placeholder-val="{{ true }}"><span style="font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;background:#F2EEE8;color:#5B6878;padding:6px 10px;border-radius:0">Placeholder reviews — replace with real ones</span></sc-if>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:24px">
+      <sc-for list="{{ reviews }}" as="r" hint-placeholder-count="3">
+        <figure style="margin:0;padding:34px 32px;background:#FFFFFF;border:1px solid rgba(60,45,25,.1);border-radius:0;display:flex;flex-direction:column;gap:28px;justify-content:space-between">
+          <blockquote style="margin:0;font-family:'Roboto',sans-serif;font-weight:300;font-size:18px;line-height:1.55;text-wrap:pretty">“{{ r.quote }}”</blockquote>
+          <figcaption style="display:grid;gap:3px"><span style="font-weight:600;font-size:15px">{{ r.name }}</span><span style="font-size:14px;color:#5B6878">{{ r.meta }}</span></figcaption>
+        </figure>
+      </sc-for>
+    </div>
+  </section>
+</sc-if>
+
+<sc-if value="{{ isServices }}" hint-placeholder-val="{{ false }}">
+  <section data-screen-label="Services" style="max-width:1240px;margin:0 auto;padding:clamp(56px,7vw,96px) clamp(20px,4vw,48px) 40px">
+    <div style="font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:#5B6878;font-weight:500;margin-bottom:22px">Services</div>
+    <h1 style="font-family:'Roboto',sans-serif;font-weight:300;font-size:clamp(30px,3.4vw,44px);line-height:1.12;letter-spacing:-.01em;margin:0 0 26px;max-width:960px;text-wrap:balance">Everything your rental needs, handled.</h1>
+    <p style="font-size:16px;line-height:1.7;color:#3A4756;max-width:640px;margin:0">One management agreement covers the full lifecycle of your property — from marketing a vacancy to the year-end statement your CPA needs. Pricing is quoted per property after a free consultation.</p>
+  </section>
+  <div style="max-width:1240px;margin:0 auto;padding:0 clamp(20px,4vw,48px)"><div style="position:relative;padding:22px 0 0 22px;isolation:isolate"><div style="position:absolute;top:0;left:0;width:38%;height:60%;border:1px solid rgba(10,23,38,.3);z-index:-1"></div><div style="width:100%;aspect-ratio:21/9;max-height:620px;background:#E6E0D7"><image-slot id="services-hero" shape="rect" src="assets/photo-living.png" placeholder="Living room with ocean view"></image-slot></div></div></div>
+  <section style="max-width:1240px;margin:0 auto;padding:32px clamp(20px,4vw,48px) clamp(72px,9vw,120px)">
+    <sc-for list="{{ services }}" as="s" hint-placeholder-count="6">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:20px 56px;padding:44px 0;border-top:1px solid rgba(10,23,38,.14)">
+        <div style="display:grid;gap:12px;align-content:start">
+          <span style="font-size:13px;font-weight:600;color:#0A0A0A;letter-spacing:.1em">{{ s.num }}</span>
+          <h2 style="font-family:'Roboto',sans-serif;font-weight:300;font-size:clamp(22px,2vw,26px);line-height:1.15;margin:0">{{ s.title }}</h2>
+          <p style="margin:0;font-size:17px;line-height:1.6;color:#3A4756;max-width:460px">{{ s.blurb }}</p>
+        </div>
+        <ul style="list-style:none;margin:0;padding:0;display:grid;gap:0;align-content:start">
+          <sc-for list="{{ s.bullets }}" as="b" hint-placeholder-count="4">
+            <li style="display:flex;gap:14px;padding:13px 0;border-bottom:1px solid rgba(10,23,38,.1);font-size:16px;line-height:1.5"><span style="color:#0A0A0A;font-weight:700">—</span><span>{{ b }}</span></li>
+          </sc-for>
+        </ul>
+      </div>
+    </sc-for>
+  </section>
+</sc-if>
+
+<sc-if value="{{ isAreas }}" hint-placeholder-val="{{ false }}">
+  <section data-screen-label="Areas" style="max-width:1240px;margin:0 auto;padding:clamp(56px,7vw,96px) clamp(20px,4vw,48px) 40px">
+    <div style="font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:#5B6878;font-weight:500;margin-bottom:22px">Areas served</div>
+    <h1 style="font-family:'Roboto',sans-serif;font-weight:300;font-size:clamp(30px,3.4vw,44px);line-height:1.12;letter-spacing:-.01em;margin:0 0 26px;max-width:980px;text-wrap:balance">Coast to canyon, across San Diego County.</h1>
+    <p style="font-size:16px;line-height:1.7;color:#3A4756;max-width:640px;margin:0">We know these neighborhoods — the rents they command, the tenants they attract, and the local rules that apply. Don't see yours? If it's in the county, we likely cover it.</p>
+  </section>
+  <div style="max-width:1240px;margin:0 auto;padding:0 clamp(20px,4vw,48px)"><div style="position:relative;padding:22px 0 0 22px;isolation:isolate"><div style="position:absolute;top:0;left:0;width:38%;height:60%;border:1px solid rgba(10,23,38,.3);z-index:-1"></div><div style="width:100%;aspect-ratio:21/9;max-height:620px;background:#E6E0D7"><image-slot id="areas-hero" shape="rect" src="assets/photo-skyline.png" placeholder="San Diego skyline at sunset"></image-slot></div></div></div>
+  <section style="max-width:1240px;margin:0 auto;padding:32px clamp(20px,4vw,48px) clamp(72px,9vw,120px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:0 56px">
+    <sc-for list="{{ regions }}" as="rg" hint-placeholder-count="6">
+      <div style="padding:36px 0 44px;border-top:1px solid rgba(10,23,38,.14);display:grid;gap:18px;align-content:start">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px">
+          <h2 style="font-family:'Roboto',sans-serif;font-weight:300;font-size:24px;line-height:1.2;margin:0">{{ rg.name }}</h2>
+          <span style="font-size:13px;color:#5B6878">{{ rg.count }}</span>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px">
+          <sc-for list="{{ rg.areas }}" as="ar" hint-placeholder-count="6">
+            <span style="font-size:15px;padding:8px 14px;border:1px solid rgba(10,23,38,.2);border-radius:0;background:#FFFFFF">{{ ar }}</span>
+          </sc-for>
+        </div>
+      </div>
+    </sc-for>
+  </section>
+</sc-if>
+
+<sc-if value="{{ isRentals }}" hint-placeholder-val="{{ false }}">
+  <section data-screen-label="Rentals" style="max-width:1240px;margin:0 auto;padding:clamp(56px,7vw,96px) clamp(20px,4vw,48px) 40px">
+    <div style="font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:#5B6878;font-weight:500;margin-bottom:22px">Available rentals</div>
+    <h1 style="font-family:'Roboto',sans-serif;font-weight:300;font-size:clamp(30px,3.4vw,44px);line-height:1.12;letter-spacing:-.01em;margin:0 0 26px;max-width:960px">Homes for lease.</h1>
+    <p style="font-size:16px;line-height:1.7;color:#3A4756;max-width:640px;margin:0 0 36px">Every Unity home is inspected, professionally maintained, and managed by a local team. Apply online in minutes.</p>
+    <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center">
+      <sc-for list="{{ filters }}" as="f" hint-placeholder-count="4">
+        <button onClick="{{ f.onClick }}" style="border:1.5px solid #0A0A0A;border-radius:0;padding:10px 18px;font-size:14px;font-weight:600;cursor:pointer;background:{{ f.bg }};color:{{ f.fg }}">{{ f.label }}</button>
+      </sc-for>
+      <sc-if value="{{ showSample }}" hint-placeholder-val="{{ true }}"><span style="font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;background:#F2EEE8;color:#5B6878;padding:6px 10px;border-radius:0;margin-left:8px">Sample listings — connect Buildium listings</span></sc-if>
+    </div>
+  </section>
+  <section style="max-width:1240px;margin:0 auto;padding:24px clamp(20px,4vw,48px) clamp(72px,9vw,120px);display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr));gap:32px 24px">
+    <sc-for list="{{ listings }}" as="l" hint-placeholder-count="4">
+      <article style="display:grid;gap:16px;align-content:start">
+        <div style="aspect-ratio:4/3;border-radius:0;overflow:hidden;background:#E6E0D7;position:relative">
+          <div role="img" aria-label="{{ l.alt }}" style="width:100%;height:100%;background-size:cover;background-position:center;background-image:{{ l.bg }}"></div>
+          <span style="position:absolute;top:12px;left:12px;background:#FFFFFF;color:#0A0A0A;font-size:12px;font-weight:600;padding:6px 10px;border-radius:0">{{ l.status }}</span>
+        </div>
+        <div style="display:grid;gap:6px">
+          <div style="display:flex;justify-content:space-between;gap:12px;align-items:baseline">
+            <h3 style="margin:0;font-family:'Roboto',sans-serif;font-weight:300;font-size:19px;line-height:1.25">{{ l.hood }}</h3>
+            <span style="font-weight:700;font-size:17px;white-space:nowrap">{{ l.rent }}</span>
+          </div>
+          <span style="font-size:15px;color:#3A4756">{{ l.specs }}</span>
+        </div>
+        <button onClick="{{ goContact }}" style="justify-self:start;background:none;border:0;padding:0;color:#0A0A0A;font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;cursor:pointer" style-hover="color:#0A0A0A">Schedule a showing ⟶</button>
+      </article>
+    </sc-for>
+  </section>
+</sc-if>
+
+<sc-if value="{{ isAbout }}" hint-placeholder-val="{{ false }}">
+  <section data-screen-label="About" style="max-width:1240px;margin:0 auto;padding:clamp(56px,7vw,96px) clamp(20px,4vw,48px) clamp(56px,7vw,96px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:clamp(40px,6vw,88px);align-items:start">
+    <div>
+      <div style="font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:#5B6878;font-weight:500;margin-bottom:22px">About Unity</div>
+      <h1 style="font-family:'Roboto',sans-serif;font-weight:300;font-size:clamp(30px,3.4vw,44px);line-height:1.12;letter-spacing:-.01em;margin:0 0 30px;text-wrap:balance">Local, accountable, and invested in your returns.</h1>
+      <p style="font-size:16px;line-height:1.75;color:#3A4756;margin:0 0 18px">Unity Property Management is a San Diego County firm built around a simple idea: a rental should be run with the same care an owner would give it — and the same attention to the numbers an investor would.</p>
+      <p style="font-size:16px;line-height:1.75;color:#3A4756;margin:0 0 18px">We manage single-family homes, condos, and small multifamily buildings, pairing responsive tenant service with clear reporting through our Buildium owner portal.</p>
+      <p style="font-size:16px;line-height:1.75;color:#3A4756;margin:0">Unity Property Management is the first company in the growing UNITY family.</p>
+    </div>
+    <div style="aspect-ratio:4/5;border-radius:0;overflow:hidden;background:#E6E0D7">
+      <img src="assets/kevin-kang-coastal.png" alt="Kevin Kang" style="width:100%;height:100%;object-fit:cover;display:block">
+    </div>
+  </section>
+  <section style="background:#F2EEE8;color:#0A0A0A">
+    <div style="max-width:1240px;margin:0 auto;padding:clamp(64px,8vw,112px) clamp(20px,4vw,48px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:40px 88px">
+      <div>
+        <div style="font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:#5B6878;font-weight:500;margin-bottom:18px">Founder</div>
+        <h2 style="font-family:'Roboto',sans-serif;font-weight:300;font-size:clamp(26px,2.8vw,36px);line-height:1.15;margin:0 0 10px">Kevin Kang</h2>
+        <p style="margin:0 0 28px;font-size:16px;color:#3A4756">Founder &amp; Property Manager · Licensed CA Real Estate Agent</p>
+        <p style="font-size:16px;line-height:1.75;color:#3A4756;margin:0">Kevin oversees 90+ residential units across San Diego County — leasing, maintenance, tenant screening, compliance, and rent collection. As an agent, he also helps investors identify and acquire high-return rentals based on cash flow, appreciation potential, and neighborhood trends, and manages renovations and turnovers to keep vacancies short and budgets tight.</p>
+      </div>
+      <div style="display:grid;align-content:start">
+        <sc-for list="{{ creds }}" as="c" hint-placeholder-count="5">
+          <div style="display:grid;grid-template-columns:140px 1fr;gap:20px;padding:20px 0;border-bottom:1px solid rgba(10,23,38,.14)">
+            <span style="font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#5B6878;font-weight:600;padding-top:3px">{{ c.k }}</span>
+            <span style="font-size:17px;line-height:1.5">{{ c.v }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+  <section style="max-width:1240px;margin:0 auto;padding:clamp(72px,9vw,120px) clamp(20px,4vw,48px)">
+    <h2 style="font-family:'Roboto',sans-serif;font-weight:300;font-size:clamp(26px,2.8vw,36px);line-height:1.15;margin:0 0 48px">How we work.</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:32px">
+      <sc-for list="{{ values }}" as="v" hint-placeholder-count="3">
+        <div style="display:grid;gap:12px;align-content:start;padding-top:22px;border-top:1px solid rgba(10,23,38,.3)">
+          <h3 style="margin:0;font-family:'Roboto',sans-serif;font-weight:300;font-size:21px">{{ v.t }}</h3>
+          <p style="margin:0;font-size:16px;line-height:1.6;color:#3A4756">{{ v.d }}</p>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+</sc-if>
+
+<sc-if value="{{ isFaq }}" hint-placeholder-val="{{ false }}">
+  <section data-screen-label="FAQ" style="max-width:1240px;margin:0 auto;padding:clamp(56px,7vw,96px) clamp(20px,4vw,48px) clamp(72px,9vw,120px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr));gap:40px 88px;align-items:start">
+    <div style="position:sticky;top:120px">
+      <div style="font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:#5B6878;font-weight:500;margin-bottom:22px">FAQ</div>
+      <h1 style="font-family:'Roboto',sans-serif;font-weight:300;font-size:clamp(30px,3.4vw,44px);line-height:1.12;letter-spacing:-.01em;margin:0 0 26px">Questions owners ask us.</h1>
+      <p style="font-size:16px;line-height:1.7;color:#3A4756;margin:0 0 28px">Something else on your mind? We're happy to walk through your property.</p>
+      <button onClick="{{ goContact }}" style="background:transparent;color:#0A0A0A;border:1px solid #0A0A0A;border-radius:0;padding:13px 26px;font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;cursor:pointer" style-hover="background:#0A0A0A;color:#FFFFFF">Talk to us</button>
+    </div>
+    <div style="border-top:1px solid rgba(10,23,38,.18)">
+      <sc-for list="{{ faqs }}" as="q" hint-placeholder-count="7">
+        <div style="border-bottom:1px solid rgba(10,23,38,.18)">
+          <button onClick="{{ q.toggle }}" style="width:100%;display:flex;justify-content:space-between;align-items:center;gap:24px;background:none;border:0;padding:26px 0;cursor:pointer;text-align:left;color:#0A0A0A">
+            <span style="font-family:'Roboto',sans-serif;font-weight:300;font-size:clamp(17px,1.5vw,20px);line-height:1.4">{{ q.q }}</span>
+            <span style="font-size:26px;color:#0A0A0A;flex:none;width:24px;text-align:center">{{ q.sign }}</span>
+          </button>
+          <sc-if value="{{ q.isOpen }}" hint-placeholder-val="{{ false }}">
+            <p style="margin:-6px 0 28px;font-size:17px;line-height:1.65;color:#3A4756;max-width:640px">{{ q.a }}</p>
+          </sc-if>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+</sc-if>
+
+<sc-if value="{{ isContact }}" hint-placeholder-val="{{ false }}">
+  <section data-screen-label="Contact" style="max-width:1240px;margin:0 auto;padding:clamp(56px,7vw,96px) clamp(20px,4vw,48px) clamp(72px,9vw,120px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:48px 88px;align-items:start">
+    <div>
+      <div style="font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:#5B6878;font-weight:500;margin-bottom:22px">Contact</div>
+      <h1 style="font-family:'Roboto',sans-serif;font-weight:300;font-size:clamp(30px,3.4vw,44px);line-height:1.12;letter-spacing:-.01em;margin:0 0 26px;text-wrap:balance">Let's talk about your property.</h1>
+      <p style="font-size:16px;line-height:1.7;color:#3A4756;margin:0 0 40px;max-width:480px">Tell us a little about your rental and we'll follow up within one business day with a rent estimate and a custom management proposal.</p>
+      <div style="display:grid;border-top:1px solid rgba(10,23,38,.14)">
+        <div style="display:grid;gap:4px;padding:20px 0;border-bottom:1px solid rgba(10,23,38,.14)"><span style="font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#5B6878;font-weight:600">Phone</span><a href="tel:8583378615" style="font-size:22px;color:#0A0A0A">858-337-8615</a></div>
+        <div style="display:grid;gap:4px;padding:20px 0;border-bottom:1px solid rgba(10,23,38,.14)"><span style="font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#5B6878;font-weight:600">Email</span><a href="mailto:KKestatemanagement@gmail.com" style="font-size:22px;color:#0A0A0A;word-break:break-all">KKestatemanagement@gmail.com</a></div>
+        <div style="display:grid;gap:4px;padding:20px 0;border-bottom:1px solid rgba(10,23,38,.14)"><span style="font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#5B6878;font-weight:600">Service area</span><span style="font-size:22px">All of San Diego County</span></div>
+      </div>
+    </div>
+    <div style="background:#FFFFFF;border:1px solid rgba(60,45,25,.1);border-radius:0;padding:clamp(28px,4vw,48px)">
+      <sc-if value="{{ notSent }}" hint-placeholder-val="{{ true }}">
+        <form onSubmit="{{ submit }}" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px">
+          <sc-for list="{{ fields }}" as="fd" hint-placeholder-count="4">
+            <label style="display:grid;gap:8px;font-size:13px;font-weight:600;letter-spacing:.04em">{{ fd.label }}<input required="{{ fd.req }}" type="{{ fd.type }}" placeholder="{{ fd.ph }}" style="font-size:16px;padding:14px 16px;border:1px solid rgba(10,23,38,.25);border-radius:0;background:#fff;color:#0A0A0A;font-weight:400;outline-color:#0A0A0A"></label>
+          </sc-for>
+          <label style="display:grid;gap:8px;font-size:13px;font-weight:600;letter-spacing:.04em;grid-column:1/-1">Property address<input placeholder="Street, neighborhood" style="font-size:16px;padding:14px 16px;border:1px solid rgba(10,23,38,.25);border-radius:0;background:#fff;color:#0A0A0A;font-weight:400;outline-color:#0A0A0A"></label>
+          <label style="display:grid;gap:8px;font-size:13px;font-weight:600;letter-spacing:.04em">Property type<select style="font-size:16px;padding:14px 16px;border:1px solid rgba(10,23,38,.25);border-radius:0;background:#fff;color:#0A0A0A;font-weight:400"><option>Single-family home</option><option>Condo / townhome</option><option>Duplex – fourplex</option><option>5+ unit building</option><option>ADU</option></select></label>
+          <label style="display:grid;gap:8px;font-size:13px;font-weight:600;letter-spacing:.04em">Number of units<select style="font-size:16px;padding:14px 16px;border:1px solid rgba(10,23,38,.25);border-radius:0;background:#fff;color:#0A0A0A;font-weight:400"><option>1</option><option>2–4</option><option>5–10</option><option>11+</option></select></label>
+          <label style="display:grid;gap:8px;font-size:13px;font-weight:600;letter-spacing:.04em;grid-column:1/-1">Anything else?<textarea rows="4" placeholder="Currently vacant? Self-managing? Switching managers?" style="font-size:16px;padding:14px 16px;border:1px solid rgba(10,23,38,.25);border-radius:0;background:#fff;color:#0A0A0A;font-weight:400;resize:vertical"></textarea></label>
+          <button type="submit" style="grid-column:1/-1;background:#2E3A32;color:#FFFFFF;border:0;border-radius:0;padding:16px 26px;font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;cursor:pointer" style-hover="background:#0B1F33">Request my proposal</button>
+        </form>
+      </sc-if>
+      <sc-if value="{{ sent }}" hint-placeholder-val="{{ false }}">
+        <div style="display:grid;gap:18px;padding:32px 0">
+          <span style="font-family:'Roboto',sans-serif;font-weight:300;font-size:28px;line-height:1;color:#0A0A0A">Thank you.</span>
+          <p style="margin:0;font-size:16px;line-height:1.7;color:#3A4756">We've received your details and will be in touch within one business day.</p>
+          <button onClick="{{ resetForm }}" style="justify-self:start;background:none;border:0;padding:0;color:#0A0A0A;font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;cursor:pointer">Send another ⟶</button>
+        </div>
+      </sc-if>
+    </div>
+  </section>
+</sc-if>
+
+<sc-if value="{{ notContact }}" hint-placeholder-val="{{ true }}">
+  <section style="background:#F2EEE8;color:#0A0A0A;border-top:1px solid rgba(10,23,38,.12)">
+    <div style="max-width:1240px;margin:0 auto;padding:clamp(56px,7vw,96px) clamp(20px,4vw,48px);display:flex;flex-wrap:wrap;gap:32px;justify-content:space-between;align-items:end">
+      <h2 style="font-family:'Roboto',sans-serif;font-weight:300;font-size:clamp(26px,2.8vw,36px);line-height:1.15;margin:0;max-width:760px;text-wrap:balance">Ready for a hands-off rental?</h2>
+      <button onClick="{{ goContact }}" style="background:transparent;color:#0A0A0A;border:1px solid #0A0A0A;border-radius:0;padding:13px 26px;font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;cursor:pointer" style-hover="background:#0A0A0A;color:#FFFFFF">Get a free proposal</button>
+    </div>
+  </section>
+</sc-if>
+
+</main>
+
+<footer style="background:#2E3A32;color:#C8CFC4">
+  <div style="max-width:1240px;margin:0 auto;padding:64px clamp(20px,4vw,48px) 32px;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:40px">
+    <div style="display:grid;gap:14px;align-content:start">
+      <span style="font-family:'Roboto',sans-serif;font-weight:400;font-size:17px;letter-spacing:.42em;color:#FFFFFF">UNITY</span>
+      <span style="font-size:12px;letter-spacing:.2em;text-transform:uppercase">Property Management</span>
+      <span style="font-size:14px;line-height:1.6;max-width:260px">Residential property management for owners and investors across San Diego County.</span>
+    </div>
+    <div style="display:grid;gap:10px;align-content:start">
+      <span style="font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#C9A96A;font-weight:600;margin-bottom:6px">Company</span>
+      <sc-for list="{{ nav }}" as="item" hint-placeholder-count="5">
+        <button onClick="{{ item.onClick }}" style="background:none;border:0;padding:0;text-align:left;color:#EEF1EA;font-size:15px;cursor:pointer" style-hover="color:#B4C2AE">{{ item.label }}</button>
+      </sc-for>
+    </div>
+    <div style="display:grid;gap:10px;align-content:start">
+      <span style="font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#C9A96A;font-weight:600;margin-bottom:6px">Contact</span>
+      <a href="tel:8583378615" style="color:#EEF1EA;font-size:15px">858-337-8615</a>
+      <a href="mailto:KKestatemanagement@gmail.com" style="color:#EEF1EA;font-size:15px;word-break:break-all">KKestatemanagement@gmail.com</a>
+      <span style="font-size:15px">San Diego County, CA</span>
+    </div>
+    <div style="display:grid;gap:10px;align-content:start">
+      <span style="font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#C9A96A;font-weight:600;margin-bottom:6px">The UNITY family</span>
+      <span style="font-size:15px;color:#FFFFFF">Unity Property Management</span>
+      <span style="font-size:14px">More UNITY companies coming soon.</span>
+    </div>
+  </div>
+  <div style="max-width:1240px;margin:0 auto;padding:22px clamp(20px,4vw,48px) 32px;border-top:1px solid rgba(255,255,255,.14);display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between;font-size:13px">
+    <span>© 2026 Unity Property Management · A UNITY company</span>
+    <span>CA DRE #00000000 · Equal Housing Opportunity</span>
+  </div>
+</footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;startPage&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;home&quot;,&quot;services&quot;,&quot;areas&quot;,&quot;rentals&quot;,&quot;about&quot;,&quot;faq&quot;,&quot;contact&quot;],&quot;default&quot;:&quot;home&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;showSampleLabels&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  state = { page: null, region: 'All', openFaq: 0, sent: false, menu: false, mobile: typeof window !== 'undefined' && window.innerWidth < 860 };
+  componentDidMount() { this._r = () => { const m = window.innerWidth < 860; if (m !== this.state.mobile) this.setState({ mobile: m, menu: false }); }; window.addEventListener('resize', this._r); this._r(); }
+  componentWillUnmount() { window.removeEventListener('resize', this._r); document.body.style.overflow = ''; }
+  componentDidUpdate() { document.body.style.overflow = this.state.menu ? 'hidden' : ''; }
+  go(p) { const F = {"home":"index.html","services":"services.html","areas":"areas.html","rentals":"rentals.html","about":"about.html","faq":"faq.html","contact":"contact.html"}; return (e) => { if (e && e.preventDefault) e.preventDefault(); window.location.href = F[p]; }; }
+  renderVals() {
+    const page = 'services';
+    const nav = [['services','Services'],['areas','Areas'],['rentals','Rentals'],['about','About'],['faq','FAQ']].map(([id,label]) => ({
+      label, onClick: this.go(id), color: page === id ? '#0A0A0A' : '#0A0A0A', line: page === id ? '#A8864F' : 'transparent'
+    }));
+    const open = this.state.menu;
+    const mobileNav = [['home','Home'],['services','Services'],['areas','Areas'],['rentals','Rentals'],['about','About'],['faq','FAQ']].map(([id,label],i) => ({
+      label, onClick: this.go(id), line: page === id ? '#A8864F' : 'transparent',
+      op: open ? 1 : 0, tf: open ? 'none' : 'translateY(14px)', delay: open ? (0.08 + i * 0.05) + 's' : '0s'
+    }));
+    const regions = [
+      { name: 'Coastal', areas: ['La Jolla','Del Mar','Pacific Beach','Mission Beach','Ocean Beach','Point Loma','Coronado'] },
+      { name: 'North County', areas: ['Encinitas','Cardiff-by-the-Sea','Solana Beach','Carlsbad','Rancho Santa Fe','Carmel Valley','Oceanside','San Marcos'] },
+      { name: 'Central', areas: ['Clairemont','Bay Park','Mira Mesa','University City','Scripps Ranch','Kearny Mesa','Mission Hills','Hillcrest','North Park'] },
+      { name: 'Inland North', areas: ['Rancho Bernardo','4S Ranch','Poway','Rancho Peñasquitos','Sabre Springs','Escondido'] },
+      { name: 'South Bay', areas: ['Chula Vista','Eastlake','Otay Ranch','Bonita','Imperial Beach','National City'] },
+      { name: 'East County', areas: ['La Mesa','El Cajon','Santee','Lemon Grove','Spring Valley'] },
+    ].map(r => ({ ...r, count: r.areas.length + ' neighborhoods' }));
+    const flat = regions.flatMap(r => r.areas);
+    const allAreas = flat.map((n, i) => ({ name: n, sep: i < flat.length - 1 ? ' ·' : '' }));
+    const services = [
+      { num: '01', icon: 'assets/icons/key.svg', title: 'Leasing & tenant placement', blurb: 'Market-rate pricing, professional listings, showings, and thorough screening to place reliable, long-term tenants fast.',
+        bullets: ['Rental pricing analysis for your neighborhood','Listing syndication to major rental sites','In-person showings and online applications','Credit, income, eviction and reference screening','California-compliant lease preparation'] },
+      { num: '02', icon: 'assets/icons/rent.svg', title: 'Rent collection', blurb: 'Online rent payments, automatic late-fee enforcement, and monthly owner disbursements you can count on.',
+        bullets: ['Tenant online payment portal','Consistent late-fee and notice enforcement','Monthly direct-deposit owner draws','Security deposit handling per CA law'] },
+      { num: '03', icon: 'assets/icons/wrench.svg', title: 'Maintenance & repairs', blurb: 'A vetted local vendor network, 24/7 request intake, and owner approval on anything beyond your set limit.',
+        bullets: ['24/7 maintenance request intake','Licensed, insured vendor network','Owner-set approval thresholds','Preventive and seasonal maintenance'] },
+      { num: '04', icon: 'assets/icons/roller.svg', title: 'Turnovers & renovations', blurb: 'We scope, budget, and schedule turnovers and rehabs to cut vacancy time and increase long-term value.',
+        bullets: ['Move-out inspections with photos','Make-ready scheduling and oversight','Renovation budgets and vendor bids','Upgrade recommendations tied to rent lift'] },
+      { num: '05', icon: 'assets/icons/shield.svg', title: 'Compliance & inspections', blurb: 'Stay ahead of California landlord law, local ordinances, and city inspections — with records to prove it.',
+        bullets: ['Fair housing and AB 1482 compliance','Required notices and disclosures','Periodic property inspections','Coordination with city inspectors'] },
+      { num: '06', icon: 'assets/icons/chart.svg', title: 'Reporting & investment advisory', blurb: 'Clear financials in the Buildium owner portal, plus agent-level guidance when you’re ready to buy, sell, or expand.',
+        bullets: ['24/7 Buildium owner portal access','Monthly and year-end statements','Cash-flow and market analysis','Acquisition support from a licensed agent'] },
+    ];
+    const steps = [
+      { num: '1', title: 'Free consultation', text: 'We learn about your property, your goals, and how hands-on you want to be.' },
+      { num: '2', title: 'Rent analysis & proposal', text: 'You get a local rent estimate and a clear, custom management proposal.' },
+      { num: '3', title: 'Seamless onboarding', text: 'We take over keys, leases, tenants, and accounts — including from a previous manager.' },
+      { num: '4', title: 'Hands-off ownership', text: 'Rent arrives monthly, and every number is visible in your owner portal.' },
+    ];
+    const proof = [
+      { icon: 'assets/icons/home.svg', big: '90+ units', small: 'Residential rentals managed across San Diego County' },
+      { icon: 'assets/icons/badge.svg', big: 'Licensed agent', small: 'In-house real estate expertise for buying and selling' },
+            { icon: 'assets/icons/portal.svg', big: 'Buildium portal', small: '24/7 access to statements, documents, and requests' },
+    ];
+    const reviews = [
+      { quote: 'Our Clairemont duplex was leased in under two weeks, and the monthly statements are the clearest we’ve had.', name: 'Owner name', meta: 'Duplex owner · Clairemont' },
+      { quote: 'Responsive, organized, and they actually know the local rental market. I don’t think about my property anymore.', name: 'Owner name', meta: 'Single-family owner · Mira Mesa' },
+      { quote: 'They managed our turnover and renovation on budget and helped us raise rent to market.', name: 'Owner name', meta: 'Investor · South Bay' },
+    ];
+    const all = [
+      { img: 'assets/property-1.png', hood: 'Clairemont', rent: '$4,200/mo', specs: '3 bd · 2 ba · Single-family · Yard', status: 'Available now', region: 'Central' },
+      { img: 'assets/property-2.png', hood: 'Mira Mesa', rent: '$3,450/mo', specs: '3 bd · 2 ba · Single-family · Garage', status: 'Available Nov 1', region: 'Central' },
+      { img: 'assets/property-3.png', hood: 'Encinitas', rent: '$5,600/mo', specs: '4 bd · 2 ba · Solar · Patio', status: 'Available now', region: 'North County' },
+      { img: 'assets/property-4.png', hood: 'Chula Vista', rent: '$3,600/mo', specs: '3 bd · 2 ba · Single-family · 2-car garage', status: 'Coming soon', region: 'South Bay' },
+    ].map(l => ({ ...l, alt: 'Rental home in ' + l.hood, bg: 'url("' + l.img + '")' }));
+    const region = this.state.region;
+    const filters = ['All','Central','North County','South Bay'].map(r => ({
+      label: r, onClick: () => this.setState({ region: r }), bg: r === region ? '#0A0A0A' : 'transparent', fg: r === region ? '#FFFFFF' : '#0A0A0A'
+    }));
+    const faqData = [
+      ['How much does property management cost?', 'Fees depend on property type, size, and location. After a free consultation we send a clear, written proposal with no hidden charges.'],
+      ['How quickly can you lease my property?', 'Most well-priced homes lease within a few weeks. We price to the market, list quickly, and handle showings so vacancies stay short.'],
+      ['How do you screen tenants?', 'Every applicant goes through credit, income, rental history, eviction, and reference checks — applied consistently and in line with fair housing law.'],
+      ['Can I see how my property is doing?', 'Yes. Your Buildium owner portal shows rent received, expenses, work orders, and statements 24/7.'],
+      ['Who approves repairs?', 'You set an approval limit. Routine repairs under it are handled promptly; anything above it comes to you first, with bids.'],
+      ['I already have a manager. Can I switch?', 'Absolutely. We coordinate the transfer of leases, deposits, keys, and records so tenants experience no disruption.'],
+      ['Can you help me buy another rental?', 'Yes. Our founder is a licensed real estate agent and can help you analyze and acquire properties based on cash flow and appreciation potential.'],
+    ];
+    const faqs = faqData.map(([q, a], i) => ({ q, a, isOpen: this.state.openFaq === i, sign: this.state.openFaq === i ? '−' : '+',
+      toggle: () => this.setState(s => ({ openFaq: s.openFaq === i ? -1 : i })) }));
+    const creds = [
+      { k: 'Portfolio', v: '90+ residential units across San Diego County' },
+      { k: 'License', v: 'California real estate agent — 4 transactions closed in first year' },
+      { k: 'Education', v: 'Finance & Real Estate, San Diego State University' },
+      { k: 'Systems', v: 'Buildium property management platform' },
+      { k: 'Focus', v: 'Leasing, maintenance, compliance, and investor advisory' },
+    ];
+    const values = [
+      { t: 'Owner-first', d: 'We make decisions as if the property were ours — protecting its condition and its cash flow.' },
+      { t: 'Clear communication', d: 'Owners, tenants, and vendors always know what’s happening and what comes next.' },
+      { t: 'Systems, not guesswork', d: 'Documented processes for leasing, maintenance, and financials keep every property running the same high standard.' },
+    ];
+    const fields = [
+      { label: 'Full name', type: 'text', ph: 'Jane Smith', req: true },
+      { label: 'Email', type: 'email', ph: 'you@email.com', req: true },
+      { label: 'Phone', type: 'tel', ph: '(619) 555-0100', req: false },
+      { label: 'Neighborhood', type: 'text', ph: 'e.g. La Jolla', req: false },
+    ];
+    const ib = o => ({ ...o, iconBg: o.icon ? 'url("' + o.icon + '")' : 'none' });
+    return {
+      nav, regions, allAreas, services: services.map(ib), steps, proof: proof.map(ib), reviews, filters, faqs, creds, values, fields,
+      listings: region === 'All' ? all : all.filter(l => l.region === region),
+      showSample: this.props.showSampleLabels ?? true,
+      isHome: page === 'home', isServices: page === 'services', isAreas: page === 'areas', isRentals: page === 'rentals',
+      isAbout: page === 'about', isFaq: page === 'faq', isContact: page === 'contact', notContact: page !== 'contact',
+      sent: this.state.sent, notSent: !this.state.sent,
+      submit: (e) => { e.preventDefault(); this.setState({ sent: true }); },
+      resetForm: () => this.setState({ sent: false }),
+      isMobile: this.state.mobile, isDesktop: !this.state.mobile, menuOpen: open, menuHidden: !open, menuLabel: open ? 'Close menu' : 'Open menu',
+      toggleMenu: () => this.setState(s => ({ menu: !s.menu })), mobileNav, mGoContact: this.go('contact'),
+      menuOpacity: open ? 1 : 0, menuVis: open ? 'visible' : 'hidden', footOp: open ? 1 : 0, footTf: open ? 'none' : 'translateY(14px)',
+      barTop: open ? '22px' : '17px', barBot: open ? '22px' : '27px', barTopT: open ? 'rotate(45deg)' : 'none', barBotT: open ? 'rotate(-45deg)' : 'none',
+      goHome: this.go('home'), goServices: this.go('services'), goAreas: this.go('areas'), goAbout: this.go('about'), goContact: this.go('contact'),
+    };
+  }
+}
+</script>
+</body>
+</html>
