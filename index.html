@@ -185,7 +185,6 @@ input,select,textarea{font-family:inherit}
   <section style="max-width:1240px;margin:0 auto;padding:clamp(88px,11vw,152px) clamp(20px,4vw,48px)">
     <div style="display:flex;flex-wrap:wrap;gap:12px 20px;align-items:baseline;margin-bottom:48px">
       <h2 style="font-family:'Roboto',sans-serif;font-weight:300;font-size:clamp(26px,2.8vw,36px);line-height:1.15;margin:0">What owners say.</h2>
-      <sc-if value="{{ showSample }}" hint-placeholder-val="{{ true }}"><span style="font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;background:#F2EEE8;color:#5B6878;padding:6px 10px;border-radius:0">Placeholder reviews — replace with real ones</span></sc-if>
     </div>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:24px">
       <sc-for list="{{ reviews }}" as="r" hint-placeholder-count="3">
