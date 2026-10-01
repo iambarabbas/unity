@@ -23,6 +23,7 @@ input,select,textarea{font-family:inherit}
 
 <div style="min-height:100vh;display:flex;flex-direction:column">
 
+<sc-if value="{{ isDesktop }}" hint-placeholder-val="{{ true }}">
 <div style="background:#2E3A32;color:#E7EBE3;font-size:12px;letter-spacing:.04em">
   <div style="max-width:1240px;margin:0 auto;padding:9px clamp(20px,4vw,48px);display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between;align-items:center">
     <span style="text-transform:uppercase;letter-spacing:.18em;font-size:11px">A UNITY Company · Serving all of San Diego County</span>
@@ -32,6 +33,7 @@ input,select,textarea{font-family:inherit}
     </div>
   </div>
 </div>
+</sc-if>
 
 <header style="position:sticky;top:0;z-index:20;background:rgba(251,250,247,.92);backdrop-filter:blur(10px);border-bottom:1px solid rgba(10,23,38,.08)">
   <div style="max-width:1240px;margin:0 auto;padding:24px clamp(20px,4vw,48px);display:flex;flex-wrap:wrap;gap:16px 32px;align-items:center;justify-content:space-between">
@@ -68,7 +70,7 @@ input,select,textarea{font-family:inherit}
     </nav>
     <div style="margin-top:auto;padding-top:28px;display:grid;gap:18px;opacity:{{ footOp }};transform:{{ footTf }};transition:opacity .6s cubic-bezier(.2,.7,.2,1) .42s,transform .6s cubic-bezier(.2,.7,.2,1) .42s">
       <button onClick="{{ mGoContact }}" style="background:#2E3A32;color:#FFFFFF;border:0;border-radius:0;padding:16px 24px;font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;cursor:pointer">Get a proposal</button>
-      <div style="display:flex;justify-content:space-between;gap:16px;font-size:13px;color:#3A4756"><a href="tel:8583378615" style="color:#3A4756">858-337-8615</a><span>San Diego County</span></div>
+      <a href="tel:8583378615" style="display:flex;align-items:center;justify-content:center;gap:10px;background:#FFFFFF;color:#2E3A32;border:1px solid rgba(46,58,50,.3);padding:15px 24px;font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:600;text-decoration:none">Call Us · 858-337-8615</a>
     </div>
   </div>
 </sc-if>
